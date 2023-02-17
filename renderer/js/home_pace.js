@@ -4,8 +4,15 @@ var name2url = {
     "Hóa học" : "../img/HoaHoc.jpg",
     "Sinh học" : "../img/SinhHoc.jpg",
     "Tin học" : "../img/TinHoc.jpg",
-    "GD QP-AN" : "../img/GDCP.jpg"
-
+    "GD QP-AN" : "../img/GDCP.jpg",
+    "Công nghệ" : "../img/CongNghe.jpg",
+    "Ngữ văn" : "../img/Van.jpg",
+    "Lịch Sử" : "../img/LinhSu.jpg",
+    "Địa Lí" : "../img/DiaLy.jpg",
+    "GDCD" : "../img/GDCD.jpg",
+    "Thể dục" : "",
+    "Ngoại ngữ" : "../img/TienAnh.jpg",
+    "Tin học" : "../img/TinHoc.jpg"
 }
 
 
@@ -16,7 +23,6 @@ function createHomePage(data) {
     data.forEach((e) => {
         html.appendChild(create_div_subject(e));
     })
-
 
     document.getElementById("body").innerHTML = '';
     document.getElementById("body").appendChild(html);
@@ -60,7 +66,13 @@ function createrFiterTab() {
 }
 
 function fiter(name) {
-
+    document.querySelector(".allsub").innerHTML = ''
+    Cookie_all.listRoom.forEach(e => {
+        if (e.TenMon == name)
+        {
+            document.querySelector(".allsub").appendChild(create_div_subject(e));
+        }
+    })
 }
     
 function create_div_subject(data) {
@@ -107,35 +119,3 @@ function jsroom(data)
     window.location.href = document.location.href = document.location.href.replace("home.html", "phonghoc.html");
 }
 
-
-
-`<div class="allsub">
-<div class="sub">
-    <div class="hd">
-        <h3 class="tt">
-            LT Phương pháp tọa độ trong không gian 2
-        </h3>
-        <p>Toán</p>
-    </div>
-    <div class="bd">
-        <div class="l_bd">
-            <li>Thời Gian làm bài</li>
-            <li>Loại Phòng</li>
-            <li>Giáo Viên</li>
-            <li>Bài tập</li>
-            <li>Cho xem bài</li>
-
-        </div>
-        <div class="r_bd">
-            <li>10s</li>
-            <li>Ôn Tập</li>
-            <li>Giáo Viên</li>
-            <li>Bài tập</li>
-            <li>Cho xem bài</li>
-        </div>
-    </div>
-    <div class="end">
-        <p>21:00 18/02</p>
-    </div>
-</div>
-</div>`
