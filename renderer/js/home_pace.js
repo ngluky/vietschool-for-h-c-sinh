@@ -13,7 +13,6 @@ var name2url = {
     "Thể dục" : "",
     "Ngoại ngữ" : "../img/TienAnh.jpg",
     "Tin học" : "../img/TinHoc.jpg"
-    
 }
 
 
