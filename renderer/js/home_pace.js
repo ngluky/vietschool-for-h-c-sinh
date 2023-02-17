@@ -24,7 +24,6 @@ function createHomePage(data) {
         html.appendChild(create_div_subject(e));
     })
 
-
     document.getElementById("body").innerHTML = '';
     document.getElementById("body").appendChild(html);
 
@@ -119,36 +118,3 @@ function jsroom(data)
     Cookie.set("phong" , data)
     window.location.href = document.location.href = document.location.href.replace("home.html", "phonghoc.html");
 }
-
-
-
-`<div class="allsub">
-<div class="sub">
-    <div class="hd">
-        <h3 class="tt">
-            LT Phương pháp tọa độ trong không gian 2
-        </h3>
-        <p>Toán</p>
-    </div>
-    <div class="bd">
-        <div class="l_bd">
-            <li>Thời Gian làm bài</li>
-            <li>Loại Phòng</li>
-            <li>Giáo Viên</li>
-            <li>Bài tập</li>
-            <li>Cho xem bài</li>
-
-        </div>
-        <div class="r_bd">
-            <li>10s</li>
-            <li>Ôn Tập</li>
-            <li>Giáo Viên</li>
-            <li>Bài tập</li>
-            <li>Cho xem bài</li>
-        </div>
-    </div>
-    <div class="end">
-        <p>21:00 18/02</p>
-    </div>
-</div>
-</div>`
