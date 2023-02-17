@@ -4,8 +4,15 @@ var name2url = {
     "Hóa học" : "../img/HoaHoc.jpg",
     "Sinh học" : "../img/SinhHoc.jpg",
     "Tin học" : "../img/TinHoc.jpg",
-    "GD QP-AN" : "../img/GDCP.jpg"
-
+    "GD QP-AN" : "../img/GDCP.jpg",
+    "Công nghệ" : "../img/CongNghe.jpg",
+    "Ngữ văn" : "../img/Van.jpg",
+    "Lịch Sử" : "../img/LinhSu.jpg",
+    "Địa Lí" : "../img/DiaLy.jpg",
+    "GDCD" : "../img/GDCD.jpg",
+    "Thể dục" : "",
+    "Ngoại ngữ" : "../img/TienAnh.jpg",
+    "Tin học" : "../img/TinHoc.jpg"
 }
 
 
@@ -60,7 +67,13 @@ function createrFiterTab() {
 }
 
 function fiter(name) {
-
+    document.querySelector(".allsub").innerHTML = ''
+    Cookie_all.listRoom.forEach(e => {
+        if (e.TenMon == name)
+        {
+            document.querySelector(".allsub").appendChild(create_div_subject(e));
+        }
+    })
 }
     
 function create_div_subject(data) {
