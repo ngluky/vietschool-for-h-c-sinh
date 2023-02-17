@@ -68,9 +68,8 @@ function heightLine() {
     })
     var index = infor["cauhoiIndex"]
     for (var i = 0; i < infor.arr_Bailam.length; i++) {
+        var cau = infor.arr_Bailam[index];
         if (infor.arr_Bailam[i].cau == index) {
-            var cau = infor.arr_Bailam[i];
-
             if (!document.querySelector(`.body .ctl .da.${cau.dapan.toLowerCase()}`).classList.contains("select"))
                 document.querySelector(`.body .ctl .da.${cau.dapan.toLowerCase()}`).classList.add("select")
         }
@@ -186,7 +185,17 @@ function GetBaiTap(data) {
         }
 
         infor.arr_Data = arr_Cauhoi;
-        infor.arr_Bailam = result.Data.getTable('BaiLam').toJson();
+        var arr_Bailam_temp = result.Data.getTable('BaiLam').toJson();
+        arr_Bailam_temp.forEach((e) => {
+            var item = {
+                "cau": e.cau,
+                "dapan": index2s[e.dapan],
+                "xemlai": 0,
+                "isdaluu": true,
+            }
+            infor.arr_Bailam.push(item);
+        })
+
 
         if (infor.SoPhutLamBai)
         {
