@@ -49,7 +49,7 @@ Cookie.all().then((d) => {
 
 function tracNhiemInit() {
     infor["cauhoiIndex"] = 1;
-    craftCauhoi(infor["cauhoiIndex"]);
+    craftCauhoi(infor.cauhoiIndex);
 }
 
 function chatOnOff() {
@@ -132,51 +132,67 @@ function updataBaiLam(cau, dapan) {
 }
 
 function GetBaiTap(data) {
-    WSGet((r) => {
+    WSGet((result) => {
         // console.log(r.Data);
 
-        var dapan = r.Data.getTable("DapAn").toJson();
-        var cauhoi = r.Data.getTable("CauHoi").toJson();
-        var bailam = r.Data.getTable("BaiLam").toJson();
-        var BHHS = r.Data.getTable("BHHS").toJson();
-        var hoanvi = r.Data.getTable("HoanVi").toJson();
+        infor.arr_HoanVi = result.Data.getTable('HoanVi').toJson();
+        var arr_DapAn = result.Data.getTable("DapAn").toJson();
+        var arr_DapAn_CauHoiID = convertJson2Array(arr_DapAn, 'CauHoiID');
+        var arr_Cauhoi_temp = result.Data.getTable('CauHoi').toJson();
+        var arr_Cauhoi = [];
+        for (var ch = 0; ch < arr_Cauhoi_temp.length; ch++) 
+        {
+            var value = arr_Cauhoi_temp[ch];
+            var item = {};
+            item.SoDapAn = value.SoDapAn;
+            item['cauhoiid'] = value.CauHoiID;
+            item['cauhoi'] = value.NoiDungCauHoi;
+            item['doanvan'] = value.DoanVanID;
+            item['dapan'] = [];
 
-        console.log(dapan);
-        console.log(cauhoi);
-        console.log(bailam);
-        console.log(BHHS);
+            item['tracnghiem'] = value.TracNghiem;
+            if (value.TracNghiem) {
+                var pos = arr_DapAn_CauHoiID.indexOf(item['cauhoiid']);
+                if (pos == -1) {
+                    arr_Cauhoi = [];
+                }
+                var arr_HoanViID = convertJson2Array(infor.arr_HoanVi, 'HoanViID');
+                var poshv = arr_HoanViID.indexOf(value.HoanViID);
+                var arr_HoanVi_CH = [];
+                if (poshv != -1) {
+                    for (var i = 0; i < 4; i++) {
+                        arr_HoanVi_CH.push(infor.arr_HoanVi[poshv + i]);
+                    }
+                }
 
+                var arr_DapAn_Temp = [];
+                for (var i = pos; i < pos + item.SoDapAn; i++) {
+                    if (arr_DapAn_CauHoiID[i] == item['cauhoiid'])
+                        arr_DapAn_Temp.push(arr_DapAn[i]);
+                }
 
-        bailam.forEach((e) => {
-
-            var item = {
-                "cau": e.cau,
-                "dapan": index2s[e.dapan],
-                "xemlai": 0,
-                "isdaluu": true,
+                if (arr_HoanVi_CH.length >= item.SoDapAn && arr_DapAn_Temp.length == item.SoDapAn) {
+                    for (var j = 0; j < arr_HoanVi_CH.length; j++) {
+                        for (var i = 0; i < arr_DapAn_Temp.length; i++) {
+                            if (arr_DapAn_Temp[i].STTDapAn == arr_HoanVi_CH[j].STTDapAn) {
+                                item['dapan'].push({ 'stt': j, 'noidung': arr_DapAn_Temp[i].NoiDung });
+                            }
+                        }
+                    }
+                }
             }
-            infor.arr_Bailam.push(item);
-
+            item['hoanvi'] = value.HoanViID;
+            arr_Cauhoi.push(item);
         }
-        )
 
-        var arrCauhoi = [];
+        infor.arr_Data = arr_Cauhoi;
+        infor.arr_Bailam = result.Data.getTable('BaiLam').toJson();
 
-        cauhoi.forEach((e) => {
-            var dapan_ = dapan.filter((d) => d.CauHoiID == e.CauHoiID)
-            // console.log(dapan_);
-            e["dapan"] = dapan_;
-            arrCauhoi.push(e);
-        })
-
-        infor["arr_Data"] = arrCauhoi;
-        infor["arr_HoanVi"] = hoanvi;
         if (infor.SoPhutLamBai)
         {
             infor["minute_left"] = infor.SoPhutLamBai;
         }
         tracNhiemInit();
-        craftCauhoi(infor.cauhoiIndex)
         craftListViewCauhoi()
         updataListViewCauhoi()
 
@@ -226,14 +242,14 @@ function menuOnOff() {
 }
 
 function changeCauhoi(index) {
-    var cauhoi = infor.arr_Data.filter((e) => e.STTCau == index)[0];
+    var cauhoi = infor.arr_Data[index - 1];
     if (!cauhoi) return;
     document.querySelector(".main_cauhoi .stt").textContent = "Câu " + index.toString() + ":";
-    document.querySelector(".main_cauhoi .cauhoi .noidung").innerHTML = cauhoi.NoiDungCauHoi;
-    document.querySelector(".main_cauhoi .ctl .a .noidung").innerHTML = cauhoi.dapan[0].NoiDung;
-    document.querySelector(".main_cauhoi .ctl .b .noidung").innerHTML = cauhoi.dapan[1].NoiDung;
-    document.querySelector(".main_cauhoi .ctl .c .noidung").innerHTML = cauhoi.dapan[2].NoiDung;
-    document.querySelector(".main_cauhoi .ctl .d .noidung").innerHTML = cauhoi.dapan[3].NoiDung;
+    document.querySelector(".main_cauhoi .cauhoi .noidung").innerHTML = cauhoi.cauhoi;
+    document.querySelector(".main_cauhoi .ctl .a .noidung").innerHTML = cauhoi.dapan[0].noidung;
+    document.querySelector(".main_cauhoi .ctl .b .noidung").innerHTML = cauhoi.dapan[1].noidung;
+    document.querySelector(".main_cauhoi .ctl .c .noidung").innerHTML = cauhoi.dapan[2].noidung;
+    document.querySelector(".main_cauhoi .ctl .d .noidung").innerHTML = cauhoi.dapan[3].noidung;
 }
 
 function convertStringToHtml(str) {
@@ -325,10 +341,8 @@ function craftBaiHoc(str)
     `
 }
 
-
 function craftCauhoi(index) {
-
-    var cauhoi = infor.arr_Data.filter((e) => e.STTCau == index)[0];
+    var cauhoi = infor.arr_Data[index - 1];
     if (!cauhoi) return;
     var html = `
             <div class="main_cauhoi">
@@ -336,7 +350,7 @@ function craftCauhoi(index) {
                 <div class="cauhoi">
                     <span class="stt">Câu ${index}:</span>
                     <span class="noidung">
-                    ${cauhoi.NoiDungCauHoi}
+                    ${cauhoi.cauhoi}
                     </span>
                 </div>
                 <div class="ctl">
@@ -347,7 +361,7 @@ function craftCauhoi(index) {
                         </div>
 
                         <div class="noidung">
-                            ${cauhoi.dapan[0].NoiDung}
+                            ${cauhoi.dapan[0].noidung}
                         </div>
                     </div>
                     <div class="b da">
@@ -356,7 +370,7 @@ function craftCauhoi(index) {
                         </div>
 
                         <div class="noidung">
-                            ${cauhoi.dapan[1].NoiDung}
+                            ${cauhoi.dapan[1].noidung}
                         </div>
                     </div>
                     <div class="c da">
@@ -365,7 +379,7 @@ function craftCauhoi(index) {
                         </div>
 
                         <div class="noidung">
-                            ${cauhoi.dapan[2].NoiDung}
+                            ${cauhoi.dapan[2].noidung}
                         </div>
                     </div>
                     <div class="d da">
@@ -374,7 +388,7 @@ function craftCauhoi(index) {
                         </div>
 
                         <div class="noidung">
-                            ${cauhoi.dapan[3].NoiDung}
+                            ${cauhoi.dapan[3].noidung}
                         </div>
                     </div>
                     <!-- </div> -->
@@ -520,4 +534,13 @@ function craftCauhoi(index) {
 
     heightLine()
 
+}
+
+function convertJson2Array(dataj, fi) {
+    var arr;
+    if (fi)
+        arr = Object.keys(dataj).map(function (k) { return dataj[k][fi] });
+    else
+        arr = Object.keys(dataj).map(function (k) { return k });
+    return arr;
 }
