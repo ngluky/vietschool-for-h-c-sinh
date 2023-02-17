@@ -3,7 +3,7 @@ const fs = require('fs');
 const { app, BrowserWindow, Menu ,ipcMain} = require("electron")
 
 const path_ = path.join(process.env.Home , "AppData/Local/LopHocApp/cookie.json");
-
+var Remenber = false
 
 function createMainWindow() {
     const mainWin = new BrowserWindow({
@@ -22,6 +22,9 @@ function createMainWindow() {
     })
 
     ipcMain.on("set_cookie", (sender, data) => {
+        if (data.key == "remember") {
+            Remenber = true
+        }
         let rawdata = fs.readFileSync(path_);
         let cookie = JSON.parse(rawdata);
         cookie[data.key] = data.value;
@@ -44,10 +47,18 @@ function createMainWindow() {
     mainWin.loadFile(path.join(__dirname, "./renderer/html/home.html"));
 }
 
-app.whenReady().then(() => { createMainWindow(); });
+app.whenReady().then(() => { 
+    let rawdata = fs.readFileSync(path_);
+    let cookie = JSON.parse(rawdata);
+    Remenber = cookie.remember;
+    createMainWindow(); 
+});
 
 app.on('window-all-closed', () => {
-    let str = JSON.stringify({});
-        fs.writeFileSync(path_, str);
+
+    if (!Remenber) {
+        let str = JSON.stringify({});
+            fs.writeFileSync(path_, str);
+    }
     if (process.platform !== 'darwin') app.quit()
 })

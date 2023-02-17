@@ -259,16 +259,16 @@ function updataListViewCauhoi() {
 function craftListViewCauhoi() {
     for (var i = 1; i <= infor.arr_Data.length; i++) {
         var str = `
-        <button class="li">
+        <button class="li" onclick="
+            infor['cauhoiIndex'] = ${i};
+            changeCauhoi(${i});
+            updataListViewCauhoi();">
             <p>${i}</p>
             <div></div>
             <p></p>
         </button>`
         document.querySelector(".chat .tag_conten .list-content").appendChild(convertStringToHtml(str));
     }
-
-    if (!infor.KhongHienBaiTap)
-        document.querySelector(".chat .tag_conten .button").appendChild(convertStringToHtml(`<button class="button_lamlai">Làm lại</button>`))
 }
 
 function craftBaiHoc(str)
@@ -464,6 +464,17 @@ function craftCauhoi(index) {
                     </div>
                     <div class="button">
                         <button class="button_nop">Nộp bài</button>
+                        <button class="button_menu">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                        <div class="element">
+                                        <div class="pad">    
+                                        <li>Làm lại</li>
+                                        <li>Làm lại bài mới</li>
+                                        <li>coppy</li>
+                                        <li>pass</li>
+                                    </div>
+                                        </div>
+                                    </button>
                     </div>
                 </div>
 
