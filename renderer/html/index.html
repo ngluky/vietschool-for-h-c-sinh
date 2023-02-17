@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../js/jQuery.js"></script>
+    <script src="..//js/prosoft/prosoft.data-1.0.2.js"></script>
+    <script src="../js/login.js"></script>
+    <script>
+        Service.url = "http://vietschool.vn/Home/Invoke"
+    </script>
+    <title></title>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="all" />
+</head>
+
+<body>
+    <div class="main">
+        <div id="body">
+            <div class="center">
+                <h1>vietschool</h1>
+                <div class="font">
+                    <div class="txt_field">
+                        <input type="text" name="user" id="username" required>
+                        <span></span>
+                        <label>username</label>
+                    </div>
+
+                    <div class="txt_field">
+                        <input type="password" name="user" id="pass" required>
+                        <span></span>
+                        <label>password</label>
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox">
+                        <h3>duy chì đăng nhập</h3>
+                    </div>
+                    <div class="mess" id="err"></div>
+                    <button id="button_login" onclick="login()">
+                        Login
+                    </button>
+
+
+
+                </div>
+            </div>
+        </div>
+        <div class="s">
+
+            <div style="border-radius: 50%; background: red;height: 50%; width: 50%;  border-radius: 50%;"></div>
+        </div>
+    </div>
+    <div id=""></div>
+</body>
+
+</html>

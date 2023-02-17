@@ -1,0 +1,18 @@
+{
+  "name": "app_lophoc",
+  "version": "1.0.0",
+  "description": "app lop hoc",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^23.0.0",
+    "fs": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "electron-packager": "^17.1.1"
+  }
+}
