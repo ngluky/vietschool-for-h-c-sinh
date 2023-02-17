@@ -118,4 +118,3 @@ function jsroom(data)
     Cookie.set("phong" , data)
     window.location.href = document.location.href = document.location.href.replace("home.html", "phonghoc.html");
 }
-
