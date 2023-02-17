@@ -105,6 +105,7 @@ function getTNTokenID(url , fun)
                 else if (element.includes("var error")){
                     var error = element.split('=')[1].replaceAll("'" , "");
                     error = error.substr(1 , error.length - 2);
+                    loaderOff();
                     setErr(error);
                     return;
                 }
@@ -115,11 +116,13 @@ function getTNTokenID(url , fun)
 
             // connect();
             // document.location.href
+            Cookie.set('remember' , true)
             document.location.href = document.location.href.replace("index.html", "home.html");
 
         },
 
         error: function(error) {
+            loaderOff();
             setErr("lỗi lấy Token");
         }
 

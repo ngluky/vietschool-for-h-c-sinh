@@ -465,6 +465,51 @@ body{
     color: white;
 }
 
+.chat .tag_conten .button .button_menu {
+    width: fit-content;
+    aspect-ratio: 1/1;
+    position: relative;    
+}
+
+.chat .tag_conten .button .button_menu .element {
+    position: absolute;
+    width: max-content;
+    text-align: right;
+    top: 0px;
+    right: 0px;
+    transform: translateY(-100%);
+    display: none;
+}
+
+
+.chat .tag_conten .button .button_menu .element .pad{
+    border-right: 2px solid #ffa15e;
+    border-top: 1px solid gray;
+    border-left: 1px solid gray;
+    border-bottom: 1px solid gray;
+    background: white;
+    border-radius: 5px;
+    margin-bottom: 5px;
+
+}
+
+.chat .tag_conten .button .button_menu:hover .element {
+    display: block;
+}
+
+.chat .tag_conten .button .button_menu .element li{
+    margin: 2px 0;
+    list-style: none;
+    padding: 7px;
+    font-size: 15px;
+    border-radius: 5px;
+}
+
+.chat .tag_conten .button .button_menu .element li:hover {
+    background: rgb(219, 218, 218);
+}
+
+
 .chat .tag_conten .list .li {
     /* background: ; */
     background: rgb(219, 218, 218);
