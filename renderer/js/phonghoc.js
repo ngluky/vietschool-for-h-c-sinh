@@ -3,63 +3,29 @@ var infor = {};
 var index2s = [
     "A", "B", "C", "D"
 ];
+
+var Unit = {
+    1: "Kb",
+    2: "Mb",
+    3: "Gb",
+    4: "Tb"
+}
+
 var Cookie_all = {};
+var saveID = 0;
+dtSave = new DataTable();
+dtSave.Columns.add('ID_Save', 'String');
+dtSave.Columns.add('CauHoiID', 'String');
+dtSave.Columns.add('NoiDungBaiLam', 'String');
+dtSave.Columns.add('STTDapAn', 'String')
 
-Cookie.all().then((d) => {
-    Cookie_all = d;
-
-    connect(() => {
-        GetBaiHoc(Cookie_all.phong.BaiHocGiaoVienID);
-    });
-    document.querySelectorAll(".starbar .svg").forEach((e) => {
-        e.addEventListener("click", (e) => {
-            var target = e.target;
-            while (!(target.localName == "dir")) {
-                target = target.parentElement;
-            }
-            document.querySelectorAll(".starbar .svg").forEach((e) => {
-                e.classList.remove("active");
-            });
-            target.classList.add("active")
-
-        })
-    });
-
-    document.querySelector(".starbar .lt.li .svg").addEventListener("click", (e) => {
-        document.getElementById("noidungbaihoc").className = "conten";
-        var noidungbaihoc = infor.NoiDungBaiHoc;
-        noidungbaihoc = noidungbaihoc.replaceAll('src="//', 'src="https://')
-        craftBaiHoc(noidungbaihoc);
-        document.querySelector(".inline.timer").classList.remove("ac")
-    });
-
-    document.querySelector(".starbar .bt.li .svg").addEventListener("click", (e) => {
-        if (!infor.arr_Data) {
-            GetBaiTap();
-        }
-        document.getElementById("noidungbaihoc").className = "main_cauhoi";
-        document.getElementById("noidungbaihoc").innerHTML = '';
-        document.querySelector(".inline.timer").classList.add("ac")
-        craftCauhoi(infor.cauhoiIndex)
-        craftListViewCauhoi()
-
-    });
-
-})
+function df_bin2String(array) {
+    return String.fromCharCode.apply(String, array);
+}
 
 function tracNhiemInit() {
     infor["cauhoiIndex"] = 1;
     craftCauhoi(infor.cauhoiIndex);
-}
-
-function chatOnOff() {
-    if (document.querySelector(".body .chat").classList.contains("active")) {
-        document.querySelector(".body .chat").classList.remove("active")
-    }
-    else {
-        document.querySelector(".body .chat").classList.add("active")
-
-    }
 }
 
 function heightLine() {
@@ -68,8 +34,8 @@ function heightLine() {
     })
     var index = infor["cauhoiIndex"]
     for (var i = 0; i < infor.arr_Bailam.length; i++) {
-        var cau = infor.arr_Bailam[index];
-        if (infor.arr_Bailam[i].cau == index) {
+        var cau = infor.arr_Bailam[i];
+        if (cau.cau == index) {
             if (!document.querySelector(`.body .ctl .da.${cau.dapan.toLowerCase()}`).classList.contains("select"))
                 document.querySelector(`.body .ctl .da.${cau.dapan.toLowerCase()}`).classList.add("select")
         }
@@ -86,24 +52,72 @@ function GetBaiHoc(phongId) {
         document.getElementById("mon").textContent = data.TenMon;
         var noidungbaihoc = data.NoiDungBaiHoc;
         noidungbaihoc = noidungbaihoc.replaceAll('src="//', 'src="https://')
-        document.querySelector("#noidungbaihoc .noidungbaihoc").innerHTML = noidungbaihoc;
-    }, "Elearning.Core.LearningRoom", "ElearningInit", phongId.toString(), "0"
-    )
+        var element = document.createElement('div')
+        element.innerHTML = noidungbaihoc;
+
+        element.querySelectorAll("p a").forEach(e => {
+            var url = e.href;
+            var name_file = e.textContent;
+            name_file = name_file.replaceAll('-', ' ').replaceAll('_', ' ')
+            arr_url = url.split("/")
+            var AccessCode = arr_url[arr_url.length - 1]
+            var FileId = arr_url[arr_url.length - 2]
+
+            var html = `
+                <div class="file">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                    <div>
+                        <p class="name">
+                            ${name_file}
+                        </p>
+                        <p class="size" id="${FileId}">
+                            ____
+                        </p>
+                </div>
+                `
+
+            e.parentElement.innerHTML = html;
+            
+            WSDBGet((re) => {
+                var data = re.Data.getTable('Table').toJson()[0];
+                document.getElementById(data['FileID']).innerHTML = filesize(data.FileSize);
+                infor.NoiDungBaiHoc = document.querySelector("#noidungbaihoc .noidungbaihoc").innerHTML
+
+            } ,"HS.GetFileInfo","FileID", FileId ,"AccessCode", AccessCode)
+        })
+
+        infor.NoiDungBaiHoc = element.innerHTML;
+        craftBaiHoc(infor.NoiDungBaiHoc)
+
+    }, "Elearning.Core.LearningRoom", "ElearningInit", phongId.toString(), "0")
+
+
 
 }
 
 function xemlai(index) {
+    if (!index) {
+        index = infor.cauhoiIndex
+    }
     var pos = undefined;
     for (var i = 0; i < infor.arr_Bailam.length; i++) {
         if (infor.arr_Bailam[i].cau == index) {
             pos = i;
-            break;
+            var value = infor.arr_Bailam[pos];
+            value.xemlai = 1;
+            infor.arr_Bailam[pos] = value;
+            return;
         }
     }
 
-    var value = infor.arr_Bailam[pos];
-    value.xemlai = 1;
-    infor.arr_Bailam[pos] = value;
+    var item = {
+        "cau": index,
+        "dapan": undefined,
+        "xemlai": 1,
+        "isdaluu": false,
+    }
+    infor.arr_Bailam.push(item);
+    updataListViewCauhoi()
 }
 
 function updataBaiLam(cau, dapan) {
@@ -111,6 +125,18 @@ function updataBaiLam(cau, dapan) {
         cau = infor.cauhoiIndex;
     }
     console.log(`update ${cau} at ${dapan}`);
+
+    var cauhoi = infor.arr_Data[cau - 1];
+
+    var r = dtSave.select(function (r) { return r.getCell("CauHoiID") == cauhoi.cauhoiid.toString() });
+
+    if (r.length === 0) {
+        dtSave.Rows.add(0, cauhoi.cauhoiid.toString(), null, dapan.toString());
+    }
+    else {
+        r[0].setCell('STTDapAn', dapan.toString());
+        r[0].setCell('NoiDungBaiLam', null);
+    }
 
     for (var i = 0; i < infor.arr_Bailam.length; i++) {
         if (infor.arr_Bailam[i].cau == cau) {
@@ -139,8 +165,7 @@ function GetBaiTap(data) {
         var arr_DapAn_CauHoiID = convertJson2Array(arr_DapAn, 'CauHoiID');
         var arr_Cauhoi_temp = result.Data.getTable('CauHoi').toJson();
         var arr_Cauhoi = [];
-        for (var ch = 0; ch < arr_Cauhoi_temp.length; ch++) 
-        {
+        for (var ch = 0; ch < arr_Cauhoi_temp.length; ch++) {
             var value = arr_Cauhoi_temp[ch];
             var item = {};
             item.SoDapAn = value.SoDapAn;
@@ -197,8 +222,7 @@ function GetBaiTap(data) {
         })
 
 
-        if (infor.SoPhutLamBai)
-        {
+        if (infor.SoPhutLamBai) {
             infor["minute_left"] = infor.SoPhutLamBai;
         }
         tracNhiemInit();
@@ -241,14 +265,6 @@ function back() {
     updataListViewCauhoi()
 }
 
-function menuOnOff() {
-    if (document.querySelector(".body .chat").classList.contains("active")) {
-        document.querySelector(".body .chat").classList.remove("active");
-    }
-    else {
-        document.querySelector(".body .chat").classList.add("active");
-    }
-}
 
 function changeCauhoi(index) {
     var cauhoi = infor.arr_Data[index - 1];
@@ -296,8 +312,14 @@ function craftListViewCauhoi() {
     }
 }
 
-function craftBaiHoc(str)
-{
+function filesize(bytes) {
+    var len_str = bytes.toString().length;
+    var unit_val = Math.trunc(len_str / 3);
+    var convet_val = bytes / 2 ** (10 * unit_val)
+    return `${convet_val.toFixed(2)}${Unit[unit_val]}`
+}
+
+function craftBaiHoc(str) {
     document.getElementById("noidungbaihoc").innerHTML = `
     <div class="noidungbaihoc">
                     ${str}
@@ -348,6 +370,9 @@ function craftBaiHoc(str)
                     </button>
                 </div>
     `
+
+    
+
 }
 
 function craftCauhoi(index) {
@@ -412,7 +437,7 @@ function craftCauhoi(index) {
                                 <polyline points="18 17 13 12 18 7"></polyline>
                             </svg>
                         </button>
-                        <div class="watc it">
+                        <button class="watc it" onclick="xemlai()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -420,7 +445,7 @@ function craftCauhoi(index) {
                                 <line x1="12" y1="8" x2="12" y2="12"></line>
                                 <line x1="12" y1="16" x2="12.01" y2="16"></line>
                             </svg>
-                        </div>
+                        </button>
                         <button class="next it" onclick="next()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -432,15 +457,11 @@ function craftCauhoi(index) {
                     </div>
 
                     <div class="menu">
+                    <div class="menu">
                         <button class="svg" onclick="menuOnOff()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="1"></circle>
-                                <circle cx="12" cy="5" r="1"></circle>
-                                <circle cx="12" cy="19" r="1"></circle>
-                            </svg>
-                        </button>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 18 11 12 17 6"></polyline><path d="M7 6v12"></path></svg>
+                            </button>
+                        </div>
                     </div>
 
                 </div>
@@ -486,18 +507,33 @@ function craftCauhoi(index) {
                         </div>
                     </div>
                     <div class="button">
-                        <button class="button_nop">Nộp bài</button>
-                        <button class="button_menu">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-                                        <div class="element">
-                                        <div class="pad">    
-                                        <li>Làm lại</li>
-                                        <li>Làm lại bài mới</li>
-                                        <li>coppy</li>
-                                        <li>pass</li>
-                                    </div>
-                                        </div>
-                                    </button>
+                        <button class="button_nop butt-ch">Nộp bài</button>
+                        <div class="button_menu butt-ch">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="12" cy="5" r="1"></circle>
+                                <circle cx="12" cy="19" r="1"></circle>
+                            </svg>
+                            <input type="text">
+                        
+                            <div class="con"> 
+                                <div class="li">
+                                    <p>copy</p>
+                                </div>
+                                
+                                <div class="li">
+                                    <p>pass</p>
+                                </div>
+                                
+                                <div class="li">
+                                    <p>Làm lại</p>
+                                </div>
+
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 

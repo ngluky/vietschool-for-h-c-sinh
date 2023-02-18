@@ -130,6 +130,7 @@ body{
     align-items: center;
 }
 
+
 .starbar .li .svg:hover svg{
     color: #0d8cb3 ;
 }
@@ -187,6 +188,8 @@ body{
     padding: 0px 5px;
     display: flex;
     align-items: center;
+    cursor: pointer;
+    border: 1px solid rgb(190, 190, 190);
 }
 
 .body #noidungbaihoc.conten .file svg {
@@ -195,9 +198,20 @@ body{
     height: 100%;
 }
 
-.body #noidungbaihoc.conten .file a {
+.body #noidungbaihoc.conten .file p {
     text-decoration: none;
-    color: #0D8CB3;
+    margin: 0;
+}
+
+.body #noidungbaihoc.conten .file p.name {
+    font-size: 16px;
+    font-weight: bold;
+    text-transform:capitalize;
+}
+
+.body #noidungbaihoc.conten .file p.size {
+    font-size: 13px;
+    color: gray;
 }
 
 .starbar .li.end {
@@ -261,6 +275,12 @@ body{
     height: 6.5%;
     border-radius: 5px;
     position: relative;
+    transform: rotate3d(0 , 1 , 0 , 0deg);
+    transition: 0.2s;
+}
+
+.body .directional .svg.turn-180 {
+    transform: rotate3d(0 , 1 , 0 , 180deg);
 }
 
 .body .ctl .da .noidung {
@@ -444,12 +464,12 @@ body{
 }
 
 .chat .tag_conten .button {
-    height: 45px;
+    height: 40px;
     display: flex;
 
 }
 
-.chat .tag_conten .button button {
+.chat .tag_conten .button .butt-ch {
     height: 80%;
     margin: 5px;
     border-radius: 5px;
@@ -466,49 +486,60 @@ body{
 }
 
 .chat .tag_conten .button .button_menu {
+    background: lightgray;
     width: fit-content;
     aspect-ratio: 1/1;
-    position: relative;    
+    position: relative;
 }
 
-.chat .tag_conten .button .button_menu .element {
+.chat .tag_conten .button .button_menu input {
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    border: transparent;
+    z-index: 10;
     position: absolute;
-    width: max-content;
-    text-align: right;
-    top: 0px;
-    right: 0px;
-    transform: translateY(-100%);
-    display: none;
+    outline: none;
+    opacity: 0;
+    cursor: pointer;
 }
 
-
-.chat .tag_conten .button .button_menu .element .pad{
-    border-right: 2px solid #ffa15e;
-    border-top: 1px solid gray;
-    border-left: 1px solid gray;
-    border-bottom: 1px solid gray;
-    background: white;
-    border-radius: 5px;
-    margin-bottom: 5px;
-
-}
-
-.chat .tag_conten .button .button_menu:hover .element {
+.chat .tag_conten .button .button_menu input:focus ~ div.con {
     display: block;
 }
 
-.chat .tag_conten .button .button_menu .element li{
-    margin: 2px 0;
-    list-style: none;
-    padding: 7px;
-    font-size: 15px;
+.chat .tag_conten .button .button_menu div.con {
+    width: max-content;
+    height: fit-content;
+    display: none;
+    background: rgb(231, 231, 231);
+    position: absolute;
+    top: -5px;
+    padding: 5px 10px;
     border-radius: 5px;
+    right: 0;
+    transform: translateY(-100%);
+    box-shadow: 1px 1px 1px black;
 }
 
-.chat .tag_conten .button .button_menu .element li:hover {
-    background: rgb(219, 218, 218);
+.chat .tag_conten .button .button_menu div.con p {
+    text-align: right;
+}
+.chat .tag_conten .button .button_menu div.con .li {
+    padding: 3px 0;
 }
 
+.chat .tag_conten .button .button_menu div.con .li:hover {
+    border-bottom: 1px solid #ffa15e;
+}
+
+.chat .tag_conten .button .button_menu svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+
+}
 
 .chat .tag_conten .list .li {
     /* background: ; */

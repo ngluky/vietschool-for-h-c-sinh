@@ -174,7 +174,7 @@ function WSDBGet() {
         else {
             if (ws.readyState == WebSocket.OPEN) {
                 __lastSocketOK = true;
-                var TNTokenID = Token;
+                var TNTokenID = Cookie_all["TNTokenID"];
                 //var TNTokenID = ws.token;
                 //WSGet(function (callback1, DLL, "SaveBaiHoc", SchoolID, BaiHocID, TenBaiHoc, NoiDungBaiHoc, KhoiID, MonID);   --Mine
                 //ws.get(callback1, route, token, class, function, para1, para2, ...);      --Their
