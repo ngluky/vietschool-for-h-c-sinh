@@ -8,8 +8,11 @@ app desktop
 
 ## phòng học
 ![](./scr/phong_tab_chat_open.png)
-![](./scr/phong_tab_chat_close.png)
 
 
 ## file view
 ![](./scr/viewfile.png)
+
+## làm trắc nhiệm
+![](./scr/trac_nhiem_open.png)
+
