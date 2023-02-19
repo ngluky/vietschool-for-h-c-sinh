@@ -2,7 +2,9 @@ Cookie.all().then((d) => {
     Cookie_all = d;
 
     connect(() => {
-        GetBaiHoc(Cookie_all.phong.BaiHocGiaoVienID);
+        GetBaiHoc(Cookie_all.phong.BaiHocGiaoVienID , () => {
+            if (!Cookie_all.incognito_mode) joinRoom();
+        });
     });
     document.querySelectorAll(".starbar .svg").forEach((e) => {
         e.addEventListener("click", (e) => {
@@ -19,7 +21,7 @@ Cookie.all().then((d) => {
     });
 
 
-    // chuyển san tap thí thuyết
+    // chuyển san tab lý thuyết
     document.querySelector(".starbar .lt.li .svg").addEventListener("click", (e) => {
         document.getElementById("noidungbaihoc").className = "conten";
         var noidungbaihoc = infor.NoiDungBaiHoc;
@@ -42,6 +44,13 @@ Cookie.all().then((d) => {
     });
 
 })
+
+function goto(i) {
+    infor['cauhoiIndex'] = i;
+    changeCauhoi(i);
+    updataListViewCauhoi();
+    heightLine();
+}
 
 function chatOnOff() {
     if (document.querySelector(".body .chat").classList.contains("active")) {

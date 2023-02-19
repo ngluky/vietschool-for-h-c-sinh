@@ -1,18 +1,8 @@
 
 var infor = {};
-var index2s = [
-    "A", "B", "C", "D"
-];
-
-var Unit = {
-    1: "Kb",
-    2: "Mb",
-    3: "Gb",
-    4: "Tb"
-}
-
+var index2s = ["A", "B", "C", "D"];
+var Unit = {1: "Kb",2: "Mb",3: "Gb",4: "Tb"}
 var tab_file = []
-
 var Cookie_all = {};
 var saveID = 0;
 dtSave = new DataTable();
@@ -20,6 +10,7 @@ dtSave.Columns.add('ID_Save', 'String');
 dtSave.Columns.add('CauHoiID', 'String');
 dtSave.Columns.add('NoiDungBaiLam', 'String');
 dtSave.Columns.add('STTDapAn', 'String')
+
 
 function df_bin2String(array) {
     return String.fromCharCode.apply(String, array);
@@ -44,7 +35,13 @@ function heightLine() {
     }
 }
 
-function GetBaiHoc(phongId) {
+function joinRoom() {
+    WSGet(function (rs1) {
+        console.log(rs1)
+    }, 'Elearning.Core.LearningRoom', 'ElearningCheckRoom', infor.BaiHocGiaoVienID.toString(), (df_unnu(Cookie_all.phong.BaiHocLopID) ? "" : Cookie_all.phong.BaiHocLopID.toString()), (infor.LaKiemTra ? "1" : "0"), Cookie_all.phong.TrangThaiID.toString(), df_DateTime_SQL(new Date));
+}
+
+function GetBaiHoc(phongId , callback) {
     WSGet((r) => {
         var data = r.Data.getTable("BaiHoc").toJson()[0];
         infor = data;
@@ -90,7 +87,9 @@ function GetBaiHoc(phongId) {
         })
 
         infor.NoiDungBaiHoc = element.innerHTML;
+        if (callback) callback(r);
         craftBaiHoc(infor.NoiDungBaiHoc)
+
 
     }, "Elearning.Core.LearningRoom", "ElearningInit", phongId.toString(), "0")
 
@@ -98,68 +97,7 @@ function GetBaiHoc(phongId) {
 
 }
 
-function xemlai(index) {
-    if (!index) {
-        index = infor.cauhoiIndex
-    }
-    var pos = undefined;
-    for (var i = 0; i < infor.arr_Bailam.length; i++) {
-        if (infor.arr_Bailam[i].cau == index) {
-            pos = i;
-            var value = infor.arr_Bailam[pos];
-            value.xemlai = 1;
-            infor.arr_Bailam[pos] = value;
-            return;
-        }
-    }
-
-    var item = {
-        "cau": index,
-        "dapan": undefined,
-        "xemlai": 1,
-        "isdaluu": false,
-    }
-    infor.arr_Bailam.push(item);
-    updataListViewCauhoi()
-}
-
-function updataBaiLam(cau, dapan) {
-    if (!cau) {
-        cau = infor.cauhoiIndex;
-    }
-    console.log(`update ${cau} at ${dapan}`);
-
-    var cauhoi = infor.arr_Data[cau - 1];
-
-    var r = dtSave.select(function (r) { return r.getCell("CauHoiID") == cauhoi.cauhoiid.toString() });
-
-    if (r.length === 0) {
-        dtSave.Rows.add(0, cauhoi.cauhoiid.toString(), null, dapan.toString());
-    }
-    else {
-        r[0].setCell('STTDapAn', dapan.toString());
-        r[0].setCell('NoiDungBaiLam', null);
-    }
-
-    for (var i = 0; i < infor.arr_Bailam.length; i++) {
-        if (infor.arr_Bailam[i].cau == cau) {
-            var value = infor.arr_Bailam[i];
-            value.dapan = index2s[dapan];
-            return true;
-        }
-    }
-
-    var item = {
-        "cau": cau,
-        "dapan": index2s[dapan],
-        "xemlai": 0,
-        "isdaluu": false,
-    }
-    infor.arr_Bailam.push(item);
-
-}
-
-function GetBaiTap(data) {
+function GetBaiTap() {
     WSGet((result) => {
         // console.log(r.Data);
 
@@ -215,9 +153,12 @@ function GetBaiTap(data) {
         infor.arr_Data = arr_Cauhoi;
         var arr_Bailam_temp = result.Data.getTable('BaiLam').toJson();
         arr_Bailam_temp.forEach((e) => {
+
+            var value = arr_Cauhoi[e.cau - 1]; // má nó chứ thiếu mỡi số 1
+            var dapan = tranSTTtoString(value, e.dapan);
             var item = {
                 "cau": e.cau,
-                "dapan": index2s[e.dapan],
+                "dapan": dapan,
                 "xemlai": 0,
                 "isdaluu": true,
             }
@@ -235,6 +176,114 @@ function GetBaiTap(data) {
     }, "Elearning.Core.LearningRoom", "ElearningInitCauHoi_Upgade",
         Cookie_all.phong.BaiHocGiaoVienID.toString(),
         Cookie_all.phong.BaiHocLopID.toString(), "0")
+}
+
+function tranSTTtoString(now_cauhoi, dapan) {
+    var arr_HoanViID = convertJson2Array(infor.arr_HoanVi, 'HoanViID');
+    var poshv = arr_HoanViID.indexOf(now_cauhoi.hoanvi);
+    var arr_HoanVi_CH = [];
+    if (poshv != -1) {
+        for (var i = 0; i < 4; i++) {
+            arr_HoanVi_CH.push(infor.arr_HoanVi[poshv + i]);
+        }
+    }
+
+    var arr_HoanViID_fill = convertJson2Array(arr_HoanVi_CH, 'STTDapAn');
+    var pos1 = arr_HoanViID_fill.indexOf(dapan);
+    if (pos1 != -1) {
+        dapan = arr_HoanVi_CH[pos1]['STT'];
+    }
+
+    if (dapan == 0)
+        dapan = 'A';
+    else if (dapan == 1)
+        dapan = 'B';
+    else if (dapan == 2)
+        dapan = 'C';
+    else
+        dapan = 'D';
+    return dapan;
+}
+
+function xemlai(index) {
+    if (!index) {
+        index = infor.cauhoiIndex
+    }
+    var pos = undefined;
+    for (var i = 0; i < infor.arr_Bailam.length; i++) {
+        if (infor.arr_Bailam[i].cau == index) {
+            pos = i;
+            var value = infor.arr_Bailam[pos];
+            value.xemlai = 1;
+            infor.arr_Bailam[pos] = value;
+            updataListViewCauhoi();
+            return;
+        }
+    }
+
+    var item = {
+        "cau": index,
+        "dapan": undefined,
+        "xemlai": 1,
+        "isdaluu": false,
+    }
+    infor.arr_Bailam.push(item);
+    updataListViewCauhoi();
+}
+
+function updataBaiLam(cau, dapan) {
+    if (!cau) {
+        cau = infor.cauhoiIndex;
+    }
+    console.log(`update ${cau} at ${dapan}`);
+
+    var cauhoi = infor.arr_Data[cau - 1];
+
+    var r = dtSave.select(function (r) { return r.getCell("CauHoiID") == cauhoi.cauhoiid.toString() });
+    var stt = dapan;
+    if (infor.ChoHoanVi) {
+        if (cauhoi.hoanvi && cauhoi.hoanvi != 0) {
+            var arr_HoanViID = convertJson2Array(infor.arr_HoanVi, 'HoanViID');
+            var pos = arr_HoanViID.indexOf(cauhoi.hoanvi);
+            if (pos != -1) {
+                var arr_HoanVi_CH = [];
+                for (var i = 0; i < 4; i++) {
+                    arr_HoanVi_CH.push(infor.arr_HoanVi[pos + i]);
+                }
+                var arr_HoanViID_fill = convertJson2Array(arr_HoanVi_CH, 'STT');
+                var pos1 = arr_HoanViID_fill.indexOf(parseInt(stt));
+                if (pos1 != -1) {
+                    stt = arr_HoanVi_CH[pos1]['STTDapAn'].toString();
+                }
+            }
+        }
+    }
+
+    if (r.length === 0) {
+        dtSave.Rows.add(0, cauhoi.cauhoiid.toString(), null, stt);
+    }
+    else {
+        r[0].setCell('STTDapAn', stt);
+        r[0].setCell('NoiDungBaiLam', null);
+    }
+
+
+
+    for (var i = 0; i < infor.arr_Bailam.length; i++) {
+        if (infor.arr_Bailam[i].cau == cau) {
+            var value = infor.arr_Bailam[i];
+            value.dapan = index2s[dapan];
+            return true;
+        }
+    }
+
+    var item = {
+        "cau": cau,
+        "dapan": index2s[dapan],
+        "xemlai": 0,
+        "isdaluu": false,
+    }
+    infor.arr_Bailam.push(item);
 }
 
 function outRoom() {
@@ -303,10 +352,7 @@ function updataListViewCauhoi() {
 function craftListViewCauhoi() {
     for (var i = 1; i <= infor.arr_Data.length; i++) {
         var str = `
-        <button class="li" onclick="
-            infor['cauhoiIndex'] = ${i};
-            changeCauhoi(${i});
-            updataListViewCauhoi();">
+        <button class="li" onclick="goto('${i}')">
             <p>${i}</p>
             <div></div>
             <p></p>
@@ -591,4 +637,92 @@ function convertJson2Array(dataj, fi) {
     else
         arr = Object.keys(dataj).map(function (k) { return k });
     return arr;
+}
+
+function viewFile(url) 
+{
+    arr_url = url.split("/")
+    var AccessCode = arr_url[arr_url.length - 1]
+    var FileId = arr_url[arr_url.length - 2]
+    if (tab_file.includes(FileId)) return;
+    var div_file = document.createElement("div")
+    div_file.className = `file li fileid${FileId}`
+    div_file.innerHTML = `
+        <dir class="svg active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <line x1="10" y1="9" x2="8" y2="9"></line>
+                </svg>
+            </dir>
+        <p>file</p>
+    `
+
+
+    div_file.addEventListener('click', () => {
+        document.getElementById("noidungbaihoc").innerHTML = `
+        <div class="view_file">
+            <iframe
+            src="https://docs.google.com/gview?url=${url}&embedded=true"
+            frameborder="0"></iframe>
+
+            <a class="button_dow" href="${url}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </a>
+        </div>`
+    })
+
+    document.querySelectorAll(".starbar .svg").forEach((e) => {
+        e.classList.remove("active");
+    });
+
+    document.querySelector(".main .starbar").appendChild(div_file);
+    tab_file.push(FileId)
+    document.getElementById("noidungbaihoc").innerHTML = `
+        <div class="view_file">
+            <iframe
+            src="https://docs.google.com/gview?url=${url}&embedded=true"
+            frameborder="0"></iframe>
+
+            <a class="button_dow" href="${url}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </a>
+        </div>`
+    document.querySelectorAll(".starbar .svg").forEach((e) => {
+        e.addEventListener("click", (e) => {
+            var target = e.target;
+            while (!(target.localName == "dir")) {
+                target = target.parentElement;
+            }
+            document.querySelectorAll(".starbar .svg").forEach((e) => {
+                e.classList.remove("active");
+            });
+            target.classList.add("active")
+
+        })
+    });
+    
+}
+
+function saveCau() 
+{
+    
+}
+
+function df_unnu(obj) {
+    return (typeof obj === 'undefined') || obj == null;
+}
+
+function df_DateTime_SQL(d) {
+    return d.getFullYear() + "-" + df_addZero(d.getMonth() + 1) + "-" + df_addZero(d.getDate()) + " " + df_addZero(d.getHours()) + ":" + df_addZero(d.getMinutes()) + ":" + df_addZero(d.getSeconds());
+}
+
+function df_addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
 }

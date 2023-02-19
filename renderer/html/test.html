@@ -39,7 +39,7 @@
     <div class="main">
         <div class="starbar">
             <div class="lt li">
-                <dir class="svg active">
+                <dir class="svg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
@@ -74,7 +74,6 @@
                 </dir>
                 <p>Bài tập</p>
             </div>
-
             <div class="li end">
                 <div class="svg" onclick="outRoom()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -83,79 +82,33 @@
                         <path d="M20 4v7a4 4 0 0 1-4 4H4"></path>
                     </svg>
                 </div>
-            </div>
 
+            </div>
+            <div class="file li ">
+                <dir class="svg active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <line x1="10" y1="9" x2="8" y2="9"></line>
+                    </svg>
+                </dir>
+                <p>Tên file</p>
+            </div>
 
         </div>
         <div class="body">
             <div class="conten" id="noidungbaihoc">
-                <div class="noidungbaihoc">
-                    <p>Các em xem sơ đồ tư duy để dễ nhớ kiến thức chương 5 và luyện tập các câu hỏi trắc nghiệm lý
-                        thuyết nhé.</p>
-                    <p>
-                        <button class="file">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                            <div>
-                                <p class="name">
-                                    nội dung bài học.txt
-                                </p>
-                                <p class="size">
-                                    100kb
-                                </p>
-                            </div>
-                        </button>
-                    </p>
-                </div>
-                <div class="chat">
-                    <div class="conten">
-                        <div class="tag_header">
-                            <div class="li active">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                </svg>
-                                <span>chat</span>
-                            </div>
-                            <div class="li">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="9" cy="7" r="4"></circle>
-                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                </svg>
-                                <span>Online</span>
-                            </div>
-                        </div>
-                        <div class="tag_conten">
-                            <div class="chat_content active">
-                                <div class="mess">
-                                    <div class="list_mess"></div>
-                                </div>
-                                <div class="input">
-                                    <input type="text" class="mess_input" id="text_mess">
-                                    <button onclick="Send()">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <line x1="22" y1="2" x2="11" y2="13"></line>
-                                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
+                <div class="view_file">
+                    <iframe
+                    src="https://docs.google.com/gview?url=https://file.vietschool.vn/F/12989747/567b8aff-024c-44c3-b241-cc4775942fa2&embedded=true"
+                    frameborder="0"></iframe>
 
-                            <div class="online">
-
-                            </div>
-                        </div>
-
-                    </div>
-                    <button class="button_chat" onclick="chatOnOff()">
-
-                    </button>
+                    <a class="button_dow" href="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    </a>
                 </div>
             </div>
 
