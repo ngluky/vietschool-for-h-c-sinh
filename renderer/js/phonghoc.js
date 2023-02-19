@@ -154,7 +154,7 @@ function GetBaiTap() {
         var arr_Bailam_temp = result.Data.getTable('BaiLam').toJson();
         arr_Bailam_temp.forEach((e) => {
 
-            var value = arr_Cauhoi[e.cau - 1]; // má nó chứ tiếu mỡi số 1
+            var value = arr_Cauhoi[e.cau - 1]; // má nó chứ thiếu mỡi số 1
             var dapan = tranSTTtoString(value, e.dapan);
             var item = {
                 "cau": e.cau,
