@@ -216,6 +216,7 @@ function xemlai(index) {
             var value = infor.arr_Bailam[pos];
             value.xemlai = 1;
             infor.arr_Bailam[pos] = value;
+            updataListViewCauhoi();
             return;
         }
     }
