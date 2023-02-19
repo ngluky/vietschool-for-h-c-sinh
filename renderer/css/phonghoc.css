@@ -160,6 +160,38 @@ body{
     width: calc(100% - 50px);
 }
 
+.body #noidungbaihoc .view_file {
+    height: 100%;
+    width: 100%;
+}
+.body #noidungbaihoc .view_file iframe{
+    height: 100%;
+    width: 100%;
+}
+
+.body #noidungbaihoc .view_file .button_dow{
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    height: 40px;
+    width: 40px;
+    background: rgba(0,0,0,.75);
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.body #noidungbaihoc .view_file .button_dow svg {
+    color: white;
+}
+
+.body #noidungbaihoc .view_file .button_dow:hover {
+    background: rgba(0,0,0,.35);
+}
+
 .body #noidungbaihoc.conten {
     display: flex;
     width: 100%;
@@ -197,6 +229,7 @@ body{
     margin-right: 5px;
     min-width: 30px;
     height: 100%;
+    color: black;
 }
 
 .body #noidungbaihoc.conten .file p {
@@ -209,6 +242,7 @@ body{
     font-size: 16px;
     font-weight: bold;
     text-transform:capitalize;
+    color: black;
 }
 
 .body #noidungbaihoc.conten .file p.size {

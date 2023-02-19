@@ -120,7 +120,7 @@ function xemlai(index) {
         "isdaluu": false,
     }
     infor.arr_Bailam.push(item);
-    updataListViewCauhoi()
+    updataListViewCauhoi();
 }
 
 function updataBaiLam(cau, dapan) {
@@ -156,10 +156,9 @@ function updataBaiLam(cau, dapan) {
         "isdaluu": false,
     }
     infor.arr_Bailam.push(item);
-
 }
 
-function GetBaiTap(data) {
+function GetBaiTap() {
     WSGet((result) => {
         // console.log(r.Data);
 
@@ -303,10 +302,7 @@ function updataListViewCauhoi() {
 function craftListViewCauhoi() {
     for (var i = 1; i <= infor.arr_Data.length; i++) {
         var str = `
-        <button class="li" onclick="
-            infor['cauhoiIndex'] = ${i};
-            changeCauhoi(${i});
-            updataListViewCauhoi();">
+        <button class="li" onclick="goto('${i}')">
             <p>${i}</p>
             <div></div>
             <p></p>
@@ -591,4 +587,72 @@ function convertJson2Array(dataj, fi) {
     else
         arr = Object.keys(dataj).map(function (k) { return k });
     return arr;
+}
+
+function viewFile(url) 
+{
+    arr_url = url.split("/")
+    var AccessCode = arr_url[arr_url.length - 1]
+    var FileId = arr_url[arr_url.length - 2]
+    if (tab_file.includes(FileId)) return;
+    var div_file = document.createElement("div")
+    div_file.className = `file li fileid${FileId}`
+    div_file.innerHTML = `
+        <dir class="svg active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <line x1="10" y1="9" x2="8" y2="9"></line>
+                </svg>
+            </dir>
+        <p>file</p>
+    `
+
+
+    div_file.addEventListener('click', () => {
+        document.getElementById("noidungbaihoc").innerHTML = `
+        <div class="view_file">
+            <iframe
+            src="https://docs.google.com/gview?url=${url}&embedded=true"
+            frameborder="0"></iframe>
+
+            <a class="button_dow" href="${url}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </a>
+        </div>`
+    })
+
+    document.querySelectorAll(".starbar .svg").forEach((e) => {
+        e.classList.remove("active");
+    });
+
+    document.querySelector(".main .starbar").appendChild(div_file);
+    tab_file.push(FileId)
+    document.getElementById("noidungbaihoc").innerHTML = `
+        <div class="view_file">
+            <iframe
+            src="https://docs.google.com/gview?url=${url}&embedded=true"
+            frameborder="0"></iframe>
+
+            <a class="button_dow" href="${url}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </a>
+        </div>`
+    document.querySelectorAll(".starbar .svg").forEach((e) => {
+        e.addEventListener("click", (e) => {
+            var target = e.target;
+            while (!(target.localName == "dir")) {
+                target = target.parentElement;
+            }
+            document.querySelectorAll(".starbar .svg").forEach((e) => {
+                e.classList.remove("active");
+            });
+            target.classList.add("active")
+
+        })
+    });
+    
 }

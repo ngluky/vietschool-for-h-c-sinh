@@ -43,6 +43,13 @@ Cookie.all().then((d) => {
 
 })
 
+function goto(i) {
+    infor['cauhoiIndex'] = i;
+    changeCauhoi(i);
+    updataListViewCauhoi();
+    heightLine();
+}
+
 function chatOnOff() {
     if (document.querySelector(".body .chat").classList.contains("active")) {
         document.querySelector(".body .chat").classList.remove("active")
