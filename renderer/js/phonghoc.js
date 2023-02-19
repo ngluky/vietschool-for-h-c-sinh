@@ -214,9 +214,13 @@ function GetBaiTap() {
         infor.arr_Data = arr_Cauhoi;
         var arr_Bailam_temp = result.Data.getTable('BaiLam').toJson();
         arr_Bailam_temp.forEach((e) => {
+
+            var hoanvi = arr_Cauhoi[e.cau].hoanvi;
+            var arr_Hoanvi = infor.arr_HoanVi.filter((j) => (j.HoanViID == hoanvi) && (j.STTDapAn == e.dapan))[0]
+            console.log(arr_Hoanvi)
             var item = {
                 "cau": e.cau,
-                "dapan": index2s[e.dapan],
+                "dapan": index2s[arr_Hoanvi.STT],
                 "xemlai": 0,
                 "isdaluu": true,
             }
