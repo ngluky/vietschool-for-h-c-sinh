@@ -45,6 +45,18 @@ Cookie.all().then((e) => {
             GetListRoom(0);
         });
     })
+    document.querySelectorAll(".r div.text-dis").forEach((e) => {
+        e.addEventListener('click', () => {
+            var pa = e.parentElement;
+            if (pa.querySelector('ul').classList.contains("on")){
+                pa.querySelector('ul').classList.remove('on')
+            }
+            else {
+                pa.querySelector('ul').classList.add('on')
+            }
+
+        })
+    })
 
 })
 
