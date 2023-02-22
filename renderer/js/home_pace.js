@@ -31,38 +31,86 @@ function createHomePage(data) {
 
 function createrFiterTab() {
     var l = document.querySelector(".main-header .l");
-    l.innerHTML = ''
+    l.innerHTML = '';
 
-    var button_all = document.createElement("button")
-    button_all.className = "on";
-    button_all.textContent = "All"
-    button_all.onclick = () => {
-        createHomePage(Cookie_all.listRoom)
+    var button = document.createElement("button");
+    button.className = 'bu on';
+    button.textContent = "All";
+    button.onclick = (j) => {
+        document.querySelectorAll(".main-header .bu").forEach(l => {
+            l.classList.remove("on");
+        })
+        j.target.classList.add("on");
+        Cookie_all.listRoom.forEach(e => {
+            document.querySelector(".allsub").appendChild(create_div_subject(e));
+        })
     }
 
-    l.appendChild(button_all)
+    l.appendChild(button);
 
-    var have = []
-    Cookie_all.listRoom.forEach(e => {
-        if (have.length >= 3) {
-            return;
-        } 
-        if (!have.includes(e.TenMon)) {
-            var button = document.createElement("button")
-            button.textContent = e.TenMon;
-            button.onclick = () => {
-                fiter(e.TenMon)
+    var bu_more = document.createElement("div");
+    bu_more.className = "bu more"
+
+    var contenr = document.createElement("div")
+    contenr.className = "contenr";
+
+    var ha = []
+    Cookie_all.listRoom.forEach((e) => {
+        if (!ha.includes(e.TenMon))
+        {
+            if (ha.length < 3) {
+
+                var button = document.createElement("button");
+                button.className = 'bu';
+                button.textContent = e.TenMon
+                button.onclick = (j) => {
+                    document.querySelectorAll(".main-header .bu").forEach(l => {
+                        l.classList.remove("on");
+                    })
+                    j.target.classList.add("on");
+                    fiter(e.TenMon)
+                }
+                l.appendChild(button);
             }
-            
-            have.push(e.TenMon)
-            l.appendChild(button)
+            if (ha.length == 3) {
+                var dis = document.createElement("div");
+                dis.className = "displa";
+                dis.textContent = e.TenMon;
+                bu_more.appendChild(dis);
+
+            }
+            if (ha.length >= 3) {
+                var button = document.createElement("button");
+                button.className = 'bu';
+                button.textContent = e.TenMon
+                button.onclick = () => {
+                    document.querySelectorAll(".main-header .bu").forEach(l => {
+                        l.classList.remove("on");
+                    })
+
+
+                    document.querySelector(".main-header .bu.more").classList.add("on");
+                    document.querySelector(".main-header .bu.more .displa").textContent = e.TenMon;
+                    fiter(e.TenMon)
+
+                }
+
+                contenr.appendChild(button);
+                
+            }
+            ha.push(e.TenMon);
         }
+
+
     })
 
-    var button_show = document.createElement('button')
-    button_show.className = "add"
+    bu_more.appendChild(contenr);
+    l.appendChild(bu_more);
     
-    l.appendChild(button_show)
+}
+
+function select() {
+
 }
 
 function fiter(name) {
