@@ -79,9 +79,11 @@ body {
 
 .main-header .r {
     margin-right: 10px;
+    position: relative;
 }
 
-.main-header .r .text-dis {
+.main-header .r .text-dis,
+.main-header .r .text-dis-en {
     display: flex;
     align-items: center;
     justify-content: right;
@@ -96,12 +98,14 @@ body {
     background: var(--buttoncollor);
 }
 
-.main-header .r .text-dis svg {
-    margin-left: 10px;
+.main-header .r .text-dis-en:hover {
+    background: var(--buttoncollor);
 }
 
-.main-header .r .mor{
-    position: relative;
+.main-header .r .text-dis svg,
+.main-header .r .text-dis-en svg {
+    margin-left: 10px;
+    margin-right: 5px;
 }
 
 .main-header .r .mor:hover {
@@ -230,7 +234,6 @@ body {
 .main-header .r .menu li {
     display: block;
     text-align: right;
-    transition: 0.2s;
 }
 
 .main-header .r .menu li {
@@ -239,7 +242,7 @@ body {
     padding-right: 10px;
     margin: 5px;
     color: var(--fontcollor);
-
+    transition: 0.2s;
 }
 
 .mor div.status {
@@ -328,6 +331,8 @@ button.add ion-icon{
     margin: 5px 0 0 15px;
     font-weight: lighter;
     font-size: 15px;
+    font-family: sans-serif;
+    color: rgb(77, 77, 77);
 }
 
 

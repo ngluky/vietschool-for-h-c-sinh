@@ -57,6 +57,46 @@ Cookie.all().then((e) => {
 
         })
     })
+    document.querySelector(".bu.mor").addEventListener('click' , () => {
+        if (document.querySelector('.menu ul').classList.contains("on")) {
+            document.querySelector('.menu ul').classList.remove("on")
+        }
+        else {
+            document.querySelector('.menu ul').classList.add("on")
+        }
+    })
+
+    document.querySelectorAll(".menu .ul ul > li").forEach(e => {
+        e.addEventListener("click", () => {
+            console.log(e.className)
+            switch (e.className)
+            {
+                case 'l1':
+                    break;
+                case 'l2':
+                    break
+                case 'l3':
+                    break
+                case 'l4':
+                    break
+                case 'l5':
+                    break;
+                case 'l6':
+                    break
+                case 'l7':
+                    break
+                case 'l8':
+                    Cookie.logout().then(() => {
+                        document.location.href = document.location.href.replace("home.html", "index.html");
+                    })
+                    break;
+            }
+        })
+    })
+
+    document.querySelector('.menu .ul .l6').addEventListener('click' , () => {
+
+    })
 
 })
 

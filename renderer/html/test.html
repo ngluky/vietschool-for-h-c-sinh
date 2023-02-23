@@ -6,101 +6,399 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../css/home.css">
-    <script>
-
-        window.onload = (event) => {
-            document.querySelectorAll(".r div.text-dis").forEach((e) => {
-                e.addEventListener('click', () => {
-                    var pa = e.parentElement;
-                    if (pa.querySelector('ul').classList.contains("on")){
-                        pa.querySelector('ul').classList.remove('on')
-                    }
-                    else {
-                        pa.querySelector('ul').classList.add('on')
-                    }
-
-                })
-            })
-        };
-        </script>
+    <link rel="stylesheet" href="../css/phonghoc.css">
+    <script src="../js/phonghocEvent.js"></script>
+    
 </head>
 
 <body>
-    <div class="main">
-        <div class="sp"></div>
-        <div class="main-header">
-            <div class="l">
-                <button class="bu"></button>
-                <button class="bu"></button>
-                <button class="bu"></button>
-                <button class="bu"></button>
-                <div class="bu more">
-                    <div class="displa">
+    <div class="header">
+        <div class="mon inline">
+            <h4>Môn:</h4>
+            <span id="mon">Tin học</span>
+        </div>
 
-                    </div>
-                    <div class="contenr">
-                        <button class="bu"></button>
-                        <button class="bu"></button>
-                        <button class="bu"></button>
-                    </div>
+        <div class="bai inline">
+            <h4>Bài:</h4>
+            <span id="tenbai">ÔN TẬP KIỂM TRA GIỮA HKII</span>
+        </div>
+    </div>
+    <div class="main">
+        <div class="starbar">
+            <div class="lt li">
+                <dir class="svg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                </dir>
+                <p>Lý thuyết</p>
+            </div>
+
+            <div class="live li">
+                <dir class="svg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="2"></circle>
+                        <path d="M4.93 19.07a10 10 0 0 1 0-14.14"></path>
+                        <path d="M7.76 16.24a6 6 0 0 1-1.3-1.95 6 6 0 0 1 0-4.59 6 6 0 0 1 1.3-1.95"></path>
+                        <path d="M16.24 7.76a6 6 0 0 1 1.3 2 6 6 0 0 1 0 4.59 6 6 0 0 1-1.3 1.95"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    </svg>
+                </dir>
+                <p>Live</p>
+            </div>
+
+            <div class="bt li">
+                <dir class="svg active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 19.5v.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8.5L18 5.5"></path>
+                        <path d="M8 18h1"></path>
+                        <path d="M18.42 9.61a2.1 2.1 0 1 1 2.97 2.97L16.95 17 13 18l.99-3.95 4.43-4.44Z"></path>
+                    </svg>
+                </dir>
+                <p>Bài tập</p>
+            </div>
+
+            <div class="li end">
+                <div class="svg" onclick="outRoom()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 10 4 15 9 20"></polyline>
+                        <path d="M20 4v7a4 4 0 0 1-4 4H4"></path>
+                    </svg>
                 </div>
             </div>
-            <div class="r">
-                <li class="bu mor">
-                    <div class="status"></div>
-                    <div class="menu">
-                        <ul class="ul on">
-                            <li>
-                                <div class="text-dis">
-                                    <span>Phòng </span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                </div>
-                                <ul class="">
-                                    <li>trược tiếp</li>
-                                    <li>chưa diễn ra</li>
-                                    <li>kết thúc</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <div class="text-dis">
-                                    <span>Điểm</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
-                                </div>
-                                <ul class="">
-                                    <li>Lớp học</li>
-                                    <li>trường</li>
-                                </ul>
-                            </li>
 
-                            <li>
-                                <div class="text-dis">
-                                    <span>Tài Khoản</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                </div>
-                                <ul class="on">
-                                    <li>Đổi mk</li>
-                                    <li>Đăng xuất</li>
-                                </ul>
-                            </li>
 
-                        </ul>
+        </div>
+        <div class="body">
+            <div class="main_cauhoi" id="noidungbaihoc">
+            <div class="main_cauhoi">
+
+                <div class="cauhoi">
+                    <span class="stt">Câu 1:</span>
+                    <span class="noidung">
+                    <span style="font-family:'Times New Roman'">Để hiển thị thông tin các nhân viên có họ là “</span><span style="font-family:'Times New Roman'; font-weight:bold">Lê</span><span style="font-family:'Times New Roman'">” gồm </span><span style="font-family:'Times New Roman'; font-weight:bold">MaNv, HoNv</span><span style="font-family:'Times New Roman'"> thì phải đặt điều kiện tại trường </span><span style="font-family:'Times New Roman'; font-weight:bold">HoNv</span><span style="font-family:'Times New Roman'"> (chứa họ và chữ lót của tên nhân viên) là:</span>
+                    </span>
+                </div>
+                <div class="ctl">
+                    <div class="a da">
+
+                        <div class="svg">
+                            A
+                        </div>
+
+                        <div class="noidung">
+                            <span style="font-family:'Times New Roman'"> “Lê”</span>
+                        </div>
                     </div>
-                </li>
+                    <div class="b da">
+                        <div class="svg">
+                            B
+                        </div>
+
+                        <div class="noidung">
+                            <span style="font-family:'Times New Roman'"> “Lê?”</span>
+                        </div>
+                    </div>
+                    <div class="c da select">
+                        <div class="svg">
+                            C
+                        </div>
+
+                        <div class="noidung">
+                            <span style="font-family:'Times New Roman'"> “Lê *”</span>
+                        </div>
+                    </div>
+                    <div class="d da">
+                        <div class="svg">
+                            D
+                        </div>
+
+                        <div class="noidung">
+                            <span style="font-family:'Times New Roman'"> ‘Lê*’</span>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <div class="directional">
+                    <div class="timer">
+                        <div class="rep">
+                            <div class="back"></div>
+                            <h5>20p 30s</h5>
+
+                        </div>
+                    </div>
+                    <div class="bwn">
+                        <button class="back it" onclick="back()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="11 17 6 12 11 7"></polyline>
+                                <polyline points="18 17 13 12 18 7"></polyline>
+                            </svg>
+                        </button>
+                        <button class="watc it" onclick="xemlai()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </button>
+                        <button class="next it" onclick="next()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="13 17 18 12 13 7"></polyline>
+                                <polyline points="6 17 11 12 6 7"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="menu">
+                        <div class="menu">
+                            <button class="svg" onclick="menuOnOff()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 18 11 12 17 6"></polyline><path d="M7 6v12"></path></svg>
+                                </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="chat">
+            <div class="conten">
+            <div class="tag_header">
+                <div class="li active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z">
+                        </path>
+                        <path d="m9 12 2 2 4-4"></path>
+                    </svg>
+                    <span>câu hỏi</span>
+                </div>
+                <div class="li">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span>chat</span>
+                </div>
+                <div class="li">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span>Online</span>
+                </div>
+            </div>
+            <div class="tag_conten">
+                <div class="listcau active">
+                    <div class="list">
+                        <div class="list-content">
+                        <button class="li now" onclick="goto('1')">
+            <p>1</p>
+            <div></div>
+            <p>C</p>
+        </button><button class="li" onclick="goto('2')">
+            <p>2</p>
+            <div></div>
+            <p>C</p>
+        </button><button class="li" onclick="goto('3')">
+            <p>3</p>
+            <div></div>
+            <p>A</p>
+        </button><button class="li" onclick="goto('4')">
+            <p>4</p>
+            <div></div>
+            <p>D</p>
+        </button><button class="li" onclick="goto('5')">
+            <p>5</p>
+            <div></div>
+            <p>D</p>
+        </button><button class="li" onclick="goto('6')">
+            <p>6</p>
+            <div></div>
+            <p>A</p>
+        </button><button class="li" onclick="goto('7')">
+            <p>7</p>
+            <div></div>
+            <p>C</p>
+        </button><button class="li" onclick="goto('8')">
+            <p>8</p>
+            <div></div>
+            <p>D</p>
+        </button><button class="li" onclick="goto('9')">
+            <p>9</p>
+            <div></div>
+            <p>D</p>
+        </button><button class="li" onclick="goto('10')">
+            <p>10</p>
+            <div></div>
+            <p>A</p>
+        </button><button class="li" onclick="goto('11')">
+            <p>11</p>
+            <div></div>
+            <p>B</p>
+        </button><button class="li" onclick="goto('12')">
+            <p>12</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('13')">
+            <p>13</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('14')">
+            <p>14</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('15')">
+            <p>15</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('16')">
+            <p>16</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('17')">
+            <p>17</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('18')">
+            <p>18</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('19')">
+            <p>19</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('20')">
+            <p>20</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('21')">
+            <p>21</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('22')">
+            <p>22</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('23')">
+            <p>23</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('24')">
+            <p>24</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('25')">
+            <p>25</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('26')">
+            <p>26</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('27')">
+            <p>27</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('28')">
+            <p>28</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('29')">
+            <p>29</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('30')">
+            <p>30</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('31')">
+            <p>31</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('32')">
+            <p>32</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('33')">
+            <p>33</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('34')">
+            <p>34</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('35')">
+            <p>35</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('36')">
+            <p>36</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('37')">
+            <p>37</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('38')">
+            <p>38</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('39')">
+            <p>39</p>
+            <div></div>
+            <p></p>
+        </button><button class="li" onclick="goto('40')">
+            <p>40</p>
+            <div></div>
+            <p></p>
+        </button></div>
+                    </div>
+                    <div class="button">
+                        <button class="button_nop butt-ch">Nộp bài</button>
+                        <div class="button_menu butt-ch">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="12" cy="5" r="1"></circle>
+                                <circle cx="12" cy="19" r="1"></circle>
+                            </svg>
+                            <input type="text">
+                        
+                            <div class="con"> 
+                                <div class="li">
+                                    <p>copy</p>
+                                </div>
+                                
+                                <div class="li">
+                                    <p>pass</p>
+                                </div>
+                                
+                                <div class="li">
+                                    <p>Làm lại</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat">
+
+                </div>
+
+                <div class="online">
+
+                </div>
             </div>
         </div>
-        <div id="body">
-            <div class="allsub">
+                </div>
             </div>
+
+            
         </div>
 
-        <div class="s">
-            <div style="border-radius: 50%; background: red;height: 50%; width: 50%;  border-radius: 50%;"></div>
-        </div>
     </div>
-    <div class="loader_div" id="loader" style="visibility: hidden;">
-        <div class="loader"></div>
-    </div>
+    
 
 
 </body>
