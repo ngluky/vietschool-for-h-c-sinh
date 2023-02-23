@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="module" src="../js/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="..//js/ionicons/ionicons.js"></script>
     <script src="../js/jQuery.js"></script>
     <script src="../js/prosoft/prosoft.data-4.0.2.min.js"></script>
     <script src="../js/WebSocketSupport.js"></script>
@@ -25,44 +23,50 @@
             <div class="r">
                 <li class="bu mor">
                     <div class="status"></div>
-                    <div class="menu">
-                        <ul class="ul on">
-                            <li>
-                                <div class="text-dis">
-                                    <span>Phòng </span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                </div>
-                                <ul class="">
-                                    <li>trược tiếp</li>
-                                    <li>chưa diễn ra</li>
-                                    <li>kết thúc</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <div class="text-dis">
-                                    <span>Điểm</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
-                                </div>
-                                <ul class="">
-                                    <li>Lớp học</li>
-                                    <li>trường</li>
-                                </ul>
-                            </li>
-
-                            <li>
-                                <div class="text-dis">
-                                    <span>Tài Khoản</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                </div>
-                                <ul class="">
-                                    <li>Đổi mk</li>
-                                    <li>Đăng xuất</li>
-                                </ul>
-                            </li>
-
-                        </ul>
-                    </div>
                 </li>
+
+                <div class="menu">
+                    <ul class="ul">
+                        <li>
+                            <div class="text-dis">
+                                <span>Phòng </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            </div>
+                            <ul class="">
+                                <li class="l1">trược tiếp</li>
+                                <li class="l2">chưa diễn ra</li>
+                                <li class="l3">kết thúc</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="text-dis">
+                                <span>Điểm</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
+                            </div>
+                            <ul class="">
+                                <li class="l4">Lớp học</li>
+                                <li class="l5">trường</li>
+                            </ul>
+                        </li>
+                        <li class="l6" title="vào phòng vào xem bài tập mà không có điểm danh">
+                            <div class="text-dis-en">
+                                <span>ẩn danh</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12a5 5 0 0 0 5 5 8 8 0 0 1 5 2 8 8 0 0 1 5-2 5 5 0 0 0 5-5V7h-5a8 8 0 0 0-5 2 8 8 0 0 0-5-2H2Z"></path><path d="M6 11c1.5 0 3 .5 3 2-2 0-3 0-3-2Z"></path><path d="M18 11c-1.5 0-3 .5-3 2 2 0 3 0 3-2Z"></path></svg>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="text-dis">
+                                <span>Tài Khoản</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            </div>
+                            <ul class="">
+                                <li class="l7">Đổi mk</li>
+                                <li class="l8">Đăng xuất</li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
             </div>
         </div>
         <div id="body">

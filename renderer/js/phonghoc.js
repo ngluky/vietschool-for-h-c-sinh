@@ -1,5 +1,5 @@
 
-var infor = {};
+var data_tracnhiem = {};
 var index2s = ["A", "B", "C", "D"];
 var Unit = {1: "Kb",2: "Mb",3: "Gb",4: "Tb"}
 var tab_file = []
@@ -10,24 +10,22 @@ dtSave.Columns.add('ID_Save', 'String');
 dtSave.Columns.add('CauHoiID', 'String');
 dtSave.Columns.add('NoiDungBaiLam', 'String');
 dtSave.Columns.add('STTDapAn', 'String')
-
-
 function df_bin2String(array) {
     return String.fromCharCode.apply(String, array);
 }
 
 function tracNhiemInit() {
-    infor["cauhoiIndex"] = 1;
-    craftCauhoi(infor.cauhoiIndex);
+    data_tracnhiem["cauhoiIndex"] = 1;
+    craftCauhoi(data_tracnhiem.cauhoiIndex);
 }
 
 function heightLine() {
     document.querySelectorAll(`.body .ctl .da`).forEach((e) => {
         e.classList.remove("select");
     })
-    var index = infor["cauhoiIndex"]
-    for (var i = 0; i < infor.arr_Bailam.length; i++) {
-        var cau = infor.arr_Bailam[i];
+    var index = data_tracnhiem["cauhoiIndex"]
+    for (var i = 0; i < data_tracnhiem.arr_Bailam.length; i++) {
+        var cau = data_tracnhiem.arr_Bailam[i];
         if (cau.cau == index) {
             if (!document.querySelector(`.body .ctl .da.${cau.dapan.toLowerCase()}`).classList.contains("select"))
                 document.querySelector(`.body .ctl .da.${cau.dapan.toLowerCase()}`).classList.add("select")
@@ -38,14 +36,18 @@ function heightLine() {
 function joinRoom() {
     WSGet(function (rs1) {
         console.log(rs1)
-    }, 'Elearning.Core.LearningRoom', 'ElearningCheckRoom', infor.BaiHocGiaoVienID.toString(), (df_unnu(Cookie_all.phong.BaiHocLopID) ? "" : Cookie_all.phong.BaiHocLopID.toString()), (infor.LaKiemTra ? "1" : "0"), Cookie_all.phong.TrangThaiID.toString(), df_DateTime_SQL(new Date));
+    }, 'Elearning.Core.LearningRoom', 'ElearningCheckRoom', data_tracnhiem.BaiHocGiaoVienID.toString(), (df_unnu(Cookie_all.phong.BaiHocLopID) ? "" : Cookie_all.phong.BaiHocLopID.toString()), (data_tracnhiem.LaKiemTra ? "1" : "0"), Cookie_all.phong.TrangThaiID.toString(), df_DateTime_SQL(new Date));
 }
 
 function GetBaiHoc(phongId , callback) {
     WSGet((r) => {
         var data = r.Data.getTable("BaiHoc").toJson()[0];
-        infor = data;
-        infor["arr_Bailam"] = [];
+        data_tracnhiem = data;
+        data_tracnhiem.second_Bailam = 0
+        data_tracnhiem["arr_Bailam"] = [];
+        data_tracnhiem.LSLamBai = ''
+        data_tracnhiem.second_lemit = data_tracnhiem.SoPhutLamBai * 60 ;
+
         console.log(data);
         document.getElementById("tenbai").textContent = data.TenBaiHoc;
         document.getElementById("mon").textContent = data.TenMon;
@@ -81,14 +83,14 @@ function GetBaiHoc(phongId , callback) {
             WSDBGet((re) => {
                 var data = re.Data.getTable('Table').toJson()[0];
                 document.getElementById(data['FileID']).innerHTML = filesize(data.FileSize);
-                infor.NoiDungBaiHoc = document.querySelector("#noidungbaihoc .noidungbaihoc").innerHTML
+                data_tracnhiem.NoiDungBaiHoc = document.querySelector("#noidungbaihoc .noidungbaihoc").innerHTML
 
             } ,"HS.GetFileInfo","FileID", FileId ,"AccessCode", AccessCode)
         })
 
-        infor.NoiDungBaiHoc = element.innerHTML;
+        data_tracnhiem.NoiDungBaiHoc = element.innerHTML;
         if (callback) callback(r);
-        craftBaiHoc(infor.NoiDungBaiHoc)
+        craftBaiHoc(data_tracnhiem.NoiDungBaiHoc)
 
 
     }, "Elearning.Core.LearningRoom", "ElearningInit", phongId.toString(), "0")
@@ -101,7 +103,14 @@ function GetBaiTap() {
     WSGet((result) => {
         // console.log(r.Data);
 
-        infor.arr_HoanVi = result.Data.getTable('HoanVi').toJson();
+        data_tracnhiem.arr_HoanVi = result.Data.getTable('HoanVi').toJson();
+        data_tracnhiem.LSLamBai = '';
+        data_tracnhiem.arr_BHHS = result.Data.getTable("BHHS").toJson()[0];
+
+        var GioVao = moment(data_tracnhiem.arr_BHHS.GioVao, 'DD/MM/yyyy HH:mm:ss');
+        var HienHanh = new Date(data_tracnhiem.arr_BHHS.GioHienHanh);
+        data_tracnhiem.Log_SoGiayBatDau = parseInt((HienHanh - GioVao) / 1000);
+
         var arr_DapAn = result.Data.getTable("DapAn").toJson();
         var arr_DapAn_CauHoiID = convertJson2Array(arr_DapAn, 'CauHoiID');
         var arr_Cauhoi_temp = result.Data.getTable('CauHoi').toJson();
@@ -121,12 +130,12 @@ function GetBaiTap() {
                 if (pos == -1) {
                     arr_Cauhoi = [];
                 }
-                var arr_HoanViID = convertJson2Array(infor.arr_HoanVi, 'HoanViID');
+                var arr_HoanViID = convertJson2Array(data_tracnhiem.arr_HoanVi, 'HoanViID');
                 var poshv = arr_HoanViID.indexOf(value.HoanViID);
                 var arr_HoanVi_CH = [];
                 if (poshv != -1) {
                     for (var i = 0; i < 4; i++) {
-                        arr_HoanVi_CH.push(infor.arr_HoanVi[poshv + i]);
+                        arr_HoanVi_CH.push(data_tracnhiem.arr_HoanVi[poshv + i]);
                     }
                 }
 
@@ -150,7 +159,7 @@ function GetBaiTap() {
             arr_Cauhoi.push(item);
         }
 
-        infor.arr_Data = arr_Cauhoi;
+        data_tracnhiem.arr_Data = arr_Cauhoi;
         var arr_Bailam_temp = result.Data.getTable('BaiLam').toJson();
         arr_Bailam_temp.forEach((e) => {
 
@@ -162,12 +171,12 @@ function GetBaiTap() {
                 "xemlai": 0,
                 "isdaluu": true,
             }
-            infor.arr_Bailam.push(item);
+            data_tracnhiem.arr_Bailam.push(item);
         })
 
 
-        if (infor.SoPhutLamBai) {
-            infor["minute_left"] = infor.SoPhutLamBai;
+        if (data_tracnhiem.SoPhutLamBai) {
+            data_tracnhiem["minute_left"] = data_tracnhiem.SoPhutLamBai;
         }
         tracNhiemInit();
         craftListViewCauhoi()
@@ -179,12 +188,12 @@ function GetBaiTap() {
 }
 
 function tranSTTtoString(now_cauhoi, dapan) {
-    var arr_HoanViID = convertJson2Array(infor.arr_HoanVi, 'HoanViID');
+    var arr_HoanViID = convertJson2Array(data_tracnhiem.arr_HoanVi, 'HoanViID');
     var poshv = arr_HoanViID.indexOf(now_cauhoi.hoanvi);
     var arr_HoanVi_CH = [];
     if (poshv != -1) {
         for (var i = 0; i < 4; i++) {
-            arr_HoanVi_CH.push(infor.arr_HoanVi[poshv + i]);
+            arr_HoanVi_CH.push(data_tracnhiem.arr_HoanVi[poshv + i]);
         }
     }
 
@@ -207,15 +216,21 @@ function tranSTTtoString(now_cauhoi, dapan) {
 
 function xemlai(index) {
     if (!index) {
-        index = infor.cauhoiIndex
+        index = data_tracnhiem.cauhoiIndex
     }
     var pos = undefined;
-    for (var i = 0; i < infor.arr_Bailam.length; i++) {
-        if (infor.arr_Bailam[i].cau == index) {
+    for (var i = 0; i < data_tracnhiem.arr_Bailam.length; i++) {
+        if (data_tracnhiem.arr_Bailam[i].cau == index) {
             pos = i;
-            var value = infor.arr_Bailam[pos];
-            value.xemlai = 1;
-            infor.arr_Bailam[pos] = value;
+            var value = data_tracnhiem.arr_Bailam[pos];
+            if (value.xemlai == 1) {
+                value.xemlai = 0
+            }
+            else {
+                value.xemlai = 1
+            }
+
+            data_tracnhiem.arr_Bailam[pos] = value;
             updataListViewCauhoi();
             return;
         }
@@ -227,28 +242,29 @@ function xemlai(index) {
         "xemlai": 1,
         "isdaluu": false,
     }
-    infor.arr_Bailam.push(item);
+    data_tracnhiem.arr_Bailam.push(item);
     updataListViewCauhoi();
 }
 
 function updataBaiLam(cau, dapan) {
     if (!cau) {
-        cau = infor.cauhoiIndex;
+        cau = data_tracnhiem.cauhoiIndex;
     }
     console.log(`update ${cau} at ${dapan}`);
+    data_tracnhiem.LSLamBai += (data_tracnhiem.Log_SoGiayBatDau+data_tracnhiem.second_Bailam)+','+ cau + "," + dapan + ";";
 
-    var cauhoi = infor.arr_Data[cau - 1];
+    var cauhoi = data_tracnhiem.arr_Data[cau - 1];
 
     var r = dtSave.select(function (r) { return r.getCell("CauHoiID") == cauhoi.cauhoiid.toString() });
     var stt = dapan;
-    if (infor.ChoHoanVi) {
+    if (data_tracnhiem.ChoHoanVi) {
         if (cauhoi.hoanvi && cauhoi.hoanvi != 0) {
-            var arr_HoanViID = convertJson2Array(infor.arr_HoanVi, 'HoanViID');
+            var arr_HoanViID = convertJson2Array(data_tracnhiem.arr_HoanVi, 'HoanViID');
             var pos = arr_HoanViID.indexOf(cauhoi.hoanvi);
             if (pos != -1) {
                 var arr_HoanVi_CH = [];
                 for (var i = 0; i < 4; i++) {
-                    arr_HoanVi_CH.push(infor.arr_HoanVi[pos + i]);
+                    arr_HoanVi_CH.push(data_tracnhiem.arr_HoanVi[pos + i]);
                 }
                 var arr_HoanViID_fill = convertJson2Array(arr_HoanVi_CH, 'STT');
                 var pos1 = arr_HoanViID_fill.indexOf(parseInt(stt));
@@ -269,10 +285,13 @@ function updataBaiLam(cau, dapan) {
 
 
 
-    for (var i = 0; i < infor.arr_Bailam.length; i++) {
-        if (infor.arr_Bailam[i].cau == cau) {
-            var value = infor.arr_Bailam[i];
+    for (var i = 0; i < data_tracnhiem.arr_Bailam.length; i++) {
+        if (data_tracnhiem.arr_Bailam[i].cau == cau) {
+            var value = data_tracnhiem.arr_Bailam[i];
             value.dapan = index2s[dapan];
+            value.isdaluu = false;
+            saveToSv(cau)
+
             return true;
         }
     }
@@ -283,8 +302,83 @@ function updataBaiLam(cau, dapan) {
         "xemlai": 0,
         "isdaluu": false,
     }
-    infor.arr_Bailam.push(item);
+    data_tracnhiem.arr_Bailam.push(item);
+
+    saveToSv(cau)
+
 }
+
+function daluu(cau) {
+    for (var i = 0; i < data_tracnhiem.arr_Bailam.length; i++) {
+        if (data_tracnhiem.arr_Bailam[i].cau == cau) {
+            pos = i;
+            var value = data_tracnhiem.arr_Bailam[pos];
+            value.isdaluu = true;
+
+            data_tracnhiem.arr_Bailam[pos] = value;
+            return;
+        }
+    }
+}
+
+function saveToSv(cau) {
+    var arr = df_LSToByteArray(data_tracnhiem.LSLamBai);
+    var strLS = df_bin2String(arr)
+
+    WSGet(function (result) {
+        console.log(result)
+        if (!result.ErrorMessage){
+            for (var i = 0; i < dtSave.Rows.length ; i ++) {
+                dtSave.Rows.remove(i);
+            }
+
+            data_tracnhiem.LSLamBai = ''
+            daluu(this.cau)
+
+        }
+        else {
+            console.log("false to save to sv")
+        }
+        console.log(this.cau)
+
+    }.bind({'cau' : cau}), 
+    'Elearning.Core.LearningRoom', 
+    'ElearningSaveBaiLam_NhieuCau', 
+    Cookie_all.phong.BaiHocGiaoVienID.toString(), 
+    dtSave, 
+    'false', // false tạm thời 
+    Cookie_all.phong.BaiHocLopID.toString(), 
+    strLS);
+}
+
+function df_LSToByteArray(LSLamBai) {
+    if (LSLamBai == undefined) return [];
+    var ls_sp = LSLamBai.split(';');
+    var length = ls_sp.length * 5; // 5 byte
+    var array = new Uint8Array(length);
+    for (var i = 0; i < ls_sp.length; i++) {
+        if (ls_sp[i] != "") {
+            var item_sp = ls_sp[i].split(',');
+            var time = parseInt(item_sp[0]);
+            var bit0 = parseInt(time / 65025);
+            var bit1 = parseInt((time % 65025) / 255);
+            var bit2 = time % 255;
+            var bit3 = parseInt(item_sp[1]);
+            var bit4 = parseInt(item_sp[2]);
+            array[i * 5] = bit0;
+            array[i * 5 + 1] = bit1;
+            array[i * 5 + 2] = bit2;
+            array[i * 5 + 3] = bit3;
+            array[i * 5 + 4] = bit4;
+        }
+    }
+    return array;
+}
+
+function df_bin2String(array) {
+    return String.fromCharCode.apply(String, array);
+}
+
 
 function outRoom() {
     WSGet((rs) => {
@@ -295,31 +389,33 @@ function outRoom() {
 
 }
 
-function next() {
-    infor["cauhoiIndex"]++;
 
-    if (infor["cauhoiIndex"] > infor.arr_Data.length) {
-        infor["cauhoiIndex"] = 1;
+
+function next() {
+    data_tracnhiem["cauhoiIndex"]++;
+
+    if (data_tracnhiem["cauhoiIndex"] > data_tracnhiem.arr_Data.length) {
+        data_tracnhiem["cauhoiIndex"] = 1;
     }
-    changeCauhoi(infor["cauhoiIndex"]);
+    changeCauhoi(data_tracnhiem["cauhoiIndex"]);
     heightLine()
     updataListViewCauhoi()
 
 }
 
 function back() {
-    infor["cauhoiIndex"]--;
-    if (infor["cauhoiIndex"] == 0) {
-        infor["cauhoiIndex"] = infor.arr_Data.length;
+    data_tracnhiem["cauhoiIndex"]--;
+    if (data_tracnhiem["cauhoiIndex"] == 0) {
+        data_tracnhiem["cauhoiIndex"] = data_tracnhiem.arr_Data.length;
     }
-    changeCauhoi(infor["cauhoiIndex"]);
+    changeCauhoi(data_tracnhiem["cauhoiIndex"]);
     heightLine()
     updataListViewCauhoi()
 }
 
 
 function changeCauhoi(index) {
-    var cauhoi = infor.arr_Data[index - 1];
+    var cauhoi = data_tracnhiem.arr_Data[index - 1];
     if (!cauhoi) return;
     document.querySelector(".main_cauhoi .stt").textContent = "Câu " + index.toString() + ":";
     document.querySelector(".main_cauhoi .cauhoi .noidung").innerHTML = cauhoi.cauhoi;
@@ -336,21 +432,24 @@ function convertStringToHtml(str) {
 }
 
 function updataListViewCauhoi() {
-    infor.arr_Bailam.forEach((e) => {
+    data_tracnhiem.arr_Bailam.forEach((e) => {
         document.querySelector(".chat .tag_conten .list-content").children[e.cau - 1].children[2].textContent = e.dapan;
         if (e.xemlai &&
             !document.querySelector(".chat .tag_conten .list-content").children[e.cau - 1].classList.contains("warning")) {
             document.querySelector(".chat .tag_conten .list-content").children[e.cau - 1].classList.add("warning")
         }
+        else {
+            document.querySelector(".chat .tag_conten .list-content").children[e.cau - 1].classList.remove("warning")
+        }
     })
-    var index = infor.cauhoiIndex;
+    var index = data_tracnhiem.cauhoiIndex;
     document.querySelectorAll(".chat .tag_conten .list-content .li").forEach(e => e.classList.remove("now"))
 
     document.querySelector(".chat .tag_conten .list-content").children[index - 1].classList.add("now")
 }
 
 function craftListViewCauhoi() {
-    for (var i = 1; i <= infor.arr_Data.length; i++) {
+    for (var i = 1; i <= data_tracnhiem.arr_Data.length; i++) {
         var str = `
         <button class="li" onclick="goto('${i}')">
             <p>${i}</p>
@@ -425,7 +524,7 @@ function craftBaiHoc(str) {
 }
 
 function craftCauhoi(index) {
-    var cauhoi = infor.arr_Data[index - 1];
+    var cauhoi = data_tracnhiem.arr_Data[index - 1];
     if (!cauhoi) return;
     var html = `
             <div class="main_cauhoi">
@@ -477,6 +576,13 @@ function craftCauhoi(index) {
                     <!-- </div> -->
                 </div>
                 <div class="directional">
+                    <div class="timer">
+                            <div class="rep">
+                                <div class="back" id="progress-bar"></div>
+                                <h5 id="timer_cout">20p 30s</h5>
+
+                            </div>
+                    </div>
                     <div class="bwn">
                         <button class="back it" onclick="back()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -625,7 +731,7 @@ function craftCauhoi(index) {
         heightLine()
         updataListViewCauhoi()
     });
-
+    document.getElementById("timer_cout").textContent = formatTime(data_tracnhiem.second_lemit - data_tracnhiem.second_Bailam);
     heightLine()
 
 }
